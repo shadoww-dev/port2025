@@ -1,1 +1,1 @@
-- In case of using the images, keep the credits to the developer (me).
+⚠️ In case of using the images, **keep the credits to me.**
