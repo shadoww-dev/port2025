@@ -1,416 +1,509 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>探索、收藏並用獨特的數位藝術改造你的空間 :: Portfólio</title>
-  <meta name="description" content="Explore, colecione e transforme seu espaço com arte digital única. :: Portfólio">
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadow :: Portfolio</title>
+    <link rel="icon" type="image/x-icon" href="./discord_image.png">
+    <meta name="description" content="Hello, I’m Shadow, a passionate and creative Junior Graphic Designer. My portfolio is a showcase of my journey in transforming ideas into compelling visuals. I specialize in brand identity, typography, and digital illustration, with a keen eye for detail and a fresh perspective. I thrive on problem-solving and am always eager to learn and grow. Let’s collaborate and create something unforgettable.">
+
+    <style>
+        /* ===== RESET ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #0d1117;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== NAVBAR ===== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: background .6s ease, box-shadow .6s ease;
+        }
+
+        header.scrolled {
+            background: rgba(13,17,23,0.95);
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.6);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 40px;
+        }
+
+        nav ul li a {
+            position: relative;
+            text-decoration: none;
+            color: #ddd;
+            font-size: 1rem;
+            transition: color .3s;
+            padding-bottom: 5px;
+        }
+
+        nav ul li a:hover {
+            color: #31a8ff;
+        }
+
+        nav ul li a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background: #31a8ff;
+            transition: width .3s ease;
+        }
+
+        nav ul li a:hover::after,
+        nav ul li a.active::after {
+            width: 100%;
+        }
+
+        nav ul li a.active {
+            color: #31a8ff;
+            text-shadow: 0 0 5px rgba(49, 168, 255, 0.8);
+        }
+
+        /* ===== SECTIONS ===== */
+        section {
+            padding: 100px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        h2.section-title {
+            font-size: 2.2rem;
+            color: #31a8ff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        p.section-subtitle {
+            text-align: center;
+            color: #ccc;
+            margin-bottom: 50px;
+        }
+
+        /* ===== HERO - Estilos para animação ===== */
+        .intro {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 50px;
+            text-align: left;
+            min-height: 100vh;
+        }
+        
+        .intro-text {
+            max-width: 450px;
+        }
+
+        .intro-text p, .intro-text h1, .intro-text h2 {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .intro-text h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .intro-text h2 {
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .intro-text a {
+            opacity: 0;
+            color: #31a8ff;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+
+        .intro-text a:hover {
+            text-decoration: underline;
+        }
+
+        .intro-img {
+            width: 300px;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0px 8px 25px rgba(0,0,0,0.6);
+            filter: saturate(0%) brightness(0.5);
+            transform: scale(0.9);
+        }
+
+        /* ===== ABOUT - Estilos para animação ===== */
+        .about-text-container {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        /* ===== LINHA DIVISÓRIA ESTILIZADA (usando div) ===== */
+        .styled-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #31a8ff, transparent);
+            width: 70%;
+            max-width: 500px;
+            margin: 50px auto;
+            opacity: 0.5;
+        }
+
+        /* ===== WORKS - Estilos para animação ===== */
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .work-card {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0px 6px 15px rgba(0,0,0,0.5);
+            transition: transform .3s;
+            filter: saturate(0%) brightness(0.5);
+            transform: scale(0.9);
+        }
+
+        .work-card:hover {
+            transform: scale(1.05);
+        }
+
+        .work-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        /* Overlay transparente */
+        .work-card .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(13, 17, 23, 0.8);
+            color: #fff;
+            padding: 15px;
+            opacity: 0;
+            transition: opacity .3s ease;
+            font-size: 0.9rem;
+        }
+
+        .work-card .overlay h3 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            color: #31a8ff;
+        }
+
+        .work-card .overlay span {
+            display: block;
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-bottom: 8px;
+        }
+
+        .work-card .overlay p {
+            font-size: 0.85rem;
+            color: #ddd;
+            line-height: 1.4;
+        }
+
+        .work-card:hover .overlay {
+            opacity: 1;
+        }
+
+        /* Botão "Ver mais" */
+        .works-button {
+            text-align: center;
+            margin-top: 40px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .works-button a {
+            display: inline-block;
+            padding: 12px 25px;
+            color: #31a8ff;
+            border: 2px solid #31a8ff;
+            background: transparent;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background .4s, color .4s, box-shadow .4s, transform .2s ease-in-out;
+        }
+
+        .works-button a:hover {
+            background: #31a8ff;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(49, 168, 255, 0.6);
+        }
+
+        .works-button a:active {
+            transform: scale(0.95);
+        }
+
+        /* ===== PROJETOS (LOGOS) ===== */
+        #projects {
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .logos-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .project-logo {
+            max-width: 150px;
+            height: auto;
+            filter: saturate(0%) brightness(0.5);
+            opacity: 0.8;
+            transition: filter 0.5s ease-in-out, transform 0.3s ease-in-out, opacity 0.5s;
+            cursor: pointer;
+        }
+
+        /* Efeito de revelação ao passar o mouse */
+        .project-logo:hover {
+            filter: saturate(100%) brightness(1);
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #aaa;
+            font-size: 0.9rem;
+            border-top: 1px solid #222;
+        }
+
+        /* ===== ESTILOS DA SCROLLBAR PARA BROWSERS WEBKIT (CHROME, SAFARI, EDGE) ===== */
+
+        ::-webkit-scrollbar {
+            width: 3px;
+            height: 3px;
+            background-color: transparent;
+        }
+
+        ::-webkit-scrollbar-button {
+            display: none;
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #555866;
+            border-radius: 2px;
+        }
+
+        ::-webkit-scrollbar-track:hover {
+            background-color: #1e1e2d;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #7a7e8f;
+        }
+
+        /* ===== ESTILOS PARA FIREFOX ===== */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #555866 transparent;
+        }
+    </style>
 </head>
-<style>
-a {
-      color: #e74c3c;            /* azul característico do Gmail */
-  text-decoration: none;     /* sem sublinhado */
-  transition: all 0.3s ease;
-}
-
-a:hover {
-    color: #e74c3c;
-  text-decoration: underline; /* sublinhado visível ao passar o mouse */
-}
-
-</style>
 <body>
-  <div class="container">
-    <header>
-      <div class="intro">
-        <h1><span class="emoji-wave">👋</span> HELLO</h1>
-        <p>I'm <strong>Shadow</strong>, a graphic design júnior. I specialize in fundraising with image manipulation.</p>
-        <p>freelance graphic designer. work: Legacy Global/BS.</p>
-        <p>for <a href="https://discord.gg/jZ6b3wAVrj" target="_blank">Discord Invite</a>.
+    <header id="navbar">
+        <nav>
+            <ul>
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#works">Works</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <section class="project">
-      <h2>🎨 Project</h2>
-      <div class="levels">
-
-  <!-- Filtros por categoria -->
-  <div class="filtros">
-    <button onclick="filtrar('todas')">All</button>
-    <button onclick="filtrar('manipulação')">Manipulation</button>
-    <button onclick="filtrar('simples')">Simple</button>
-
-  <!-- AG ALBUM -->
-  <div class="album">
-    <div class="foto simples">
-      <img src="./AG/ag (2).webp" alt="MAX LOGIN" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./AG/ag (20).webp" alt="WOMAN" onclick="abrirModal(this)">
-    </div>
-    <div class="foto manipulaçao">
-      <img src="./AG/ag (23).webp" alt="WOMAN DISCORD" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./AG/4FUN.jpg" alt="4FUN" onclick="abrirModal(this)">
-    </div>
-        <div class="foto simples">
-      <img src="./AG/ag (1).png" alt="MIX" onclick="abrirModal(this)">
-    </div>
-      <div class="foto simples">
-      <img src="./AG/ag (1).webp" alt="TEST YOUR LUCK" onclick="abrirModal(this)">
-    </div>
-      <div class="foto simples">
-      <img src="./AG/ag (2).png" alt="SMALL ROOMS GMS v.01" onclick="abrirModal(this)">
-    </div>
-          <div class="foto simples">
-      <img src="./AG/ag (3).png" alt="SMALL ROOMS GMS v.02" onclick="abrirModal(this)">
-    </div>
-      <div class="foto simples">
-      <img src="./AG/ag (3).webp" alt="MILEAGE SHOP" onclick="abrirModal(this)">
-    </div>
-      <div class="foto simples">
-      <img src="./AG/ag (4).png" alt="I'M BOOSTER AG/Discord" onclick="abrirModal(this)">
-    </div>
-      <div class="foto simples">
-      <img src="./AG/ag (4).webp" alt="SAS MAINTENANCE" onclick="abrirModal(this)">
-    </div>
-              <div class="foto simples">
-      <img src="./AG/ag (6).webp" alt="EVENT DAILY MONDAY" onclick="abrirModal(this)">
-    </div>
-                          <div class="foto simples">
-      <img src="./AG/ag (10).webp" alt="EVENT DAILY TUESDAY" onclick="abrirModal(this)">
-    </div>
-                          <div class="foto simples">
-      <img src="./AG/ag (11).webp" alt="EVENT DAILY WEDNESDAY" onclick="abrirModal(this)">
-    </div>
-                          <div class="foto simples">
-      <img src="./AG/ag (9).webp" alt="EVENT DAILY THURSDAY" onclick="abrirModal(this)">
-    </div>
-              <div class="foto simples">
-      <img src="./AG/ag (5).webp" alt="EVENT DAILY FRIDAY" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto simples">
-      <img src="./AG/ag (7).webp" alt="EVENT DAILY SATURDAY" onclick="abrirModal(this)">
-    </div>
-                      <div class="foto simples">
-      <img src="./AG/ag (8).webp" alt="EVENT DAILY SUNDAY" onclick="abrirModal(this)">
-    </div>
-          <div class="foto simples">
-      <img src="./AG/ag (12).webp" alt="NEW SERVER" onclick="abrirModal(this)">
-    </div>
-          <div class="foto simples">
-      <img src="./AG/ag (13).webp" alt="CFAG REGISTRATION" onclick="abrirModal(this)">
-    </div>
-          <div class="foto simples">
-      <img src="./AG/ag (14).webp" alt="CFAG 2.0" onclick="abrirModal(this)">
-    </div>
-          <div class="foto simples">
-      <img src="./AG/ag (15).webp" alt="LOGIN 01" onclick="abrirModal(this)">
-    </div>
-              <div class="foto simples">
-      <img src="./AG/ag (16).webp" alt="LOGIN 02" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./AG/ag (21).webp" alt="LOGIN 03" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./AG/ag (22).webp" alt="LOGIN 04" onclick="abrirModal(this)">
-    </div>
-      <div class="foto simples">
-      <img src="./AG/ag (17).webp" alt="LET'S PLAY A MATCH" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./AG/ag (18).webp" alt="DAILY AP" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./AG/ag (19).webp" alt="MYSTERY BOXES" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./AG/ag (24).webp" alt="LOW PRICE" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./AG/ag (25).webp" alt="AG MATCH ICON NO BG" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./AG/ag (26).webp" alt="discord banner" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./AG/ag (27).webp" alt="AG MATCH ICON BG" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./AG/ag (28).webp" alt="OMOH DESERT LIVE" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./AG/ag (29).webp" alt="OMOH COUNTER LIVE" onclick="abrirModal(this)">
-    </div>
-    <div class="foto manipulação">
-      <img src="./AG/ag (30).webp" alt="OMOH" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./AG/alpha_cup_x1_v2.jpg" alt="ALPHA CUP X1" onclick="abrirModal(this)">
-    </div>   
-    <div class="foto simples">
-      <img src="./AG/anunciamento.png" alt="ANNOUCEMENT OFFICIAL" onclick="abrirModal(this)">
-    </div> 
-    <div class="foto simples manipulaçao">
-      <img src="./AG/arteworking_crossfire_banner_4.png" alt="ARTWORKING CFAG" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./AG/cassinobanner_v2.jpg" alt="CASSINO DISCORD BANNER" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./AG/la_swat_edit.png" alt="LA SWAT EDIT" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./AG/myster_box_v1.jpg" alt="MYSTERY BOX v.01" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./AG/new_spoiler.png" alt="NEW SPOILER" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./AG/pack_banner.jpg" alt="PACK" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./AG/pass_game.jpg" alt="PASS GAME" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./AG/register.png" alt="REGISTER" onclick="abrirModal(this)">
-    </div>
-
-<!-- CPX ALBUM -->
-    <div class="foto simples">
-      <img src="./CPX/0c20bd129572335.66bd4a0dc63a7.gif" alt="SEIJIN9 GIF LEONA" onclick="abrirModal(this)">
-    </div>
-<div class="foto simples">
-      <img src="./CPX/banner_cpx_skull.png" alt="CPX SKULL BANNER" onclick="abrirModal(this)">
-    </div>
-    <div class="foto manipulação">
-      <img src="./CPX/banner_manipulation.png" alt="BANNER MANIPULATION" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./CPX/cpx_skull.webp" alt="CPX SKULL ICON BG" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./CPX/cpx_skull_bg.png" alt="CPX ICON SKULL" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./CPX/cpx_skull_logo.webp" alt="CPX ICON SKULL NO BG" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./CPX/leona_cpx.png" alt="LEONA ICON BG" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./CPX/leona_cpx_bg.png" alt="BANNER LEONA SEIJIN9" onclick="abrirModal(this)">
-    </div>
-
-<!-- DELUXE RP -->
-<div class="foto simples">
-      <img src="./DRP/anuncios.png" alt="ANNOUCEMENT" onclick="abrirModal(this)">
-    </div>
-<div class="foto simples">
-      <img src="./DRP/banner_discord_deluxe.png" alt="DELUXE BANNER YOUTUBE" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./DRP/banner_discord.png" alt="DELUXE DISCORD" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./DRP/banner.png" alt="BANNER YOUTUBE" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./DRP/bgg.png" alt="DELUXE BANNER" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./DRP/changelog.png" alt="CHANGELOG" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./DRP/deluxe_roleplay_logo.png" alt="DELUXE RP" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./DRP/DEPARTAMENTO_POLICIAL.png" alt="DEPARTAMENTO POLICIAL DELUXE" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./DRP/fivem-banner.png" alt="VIAJANDO..." onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./DRP/fivem-banner2.png" alt="DELUXE..." onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./DRP/IMG.png" alt="DELUXE IMG" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./DRP/personagem-bg-deluxe.png" alt="PERSONAGEM BG" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./DRP/Personaliza-o-bg-deluxe.png" alt="PERSONAGEM NO BG" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./DRP/update.png" alt="UPDATE" onclick="abrirModal(this)">
-    </div>
-
-    <!-- ALBUM ELITE -->
-<div class="foto simples">
-      <img src="./ELT/art_elite.webp" alt="ELITE" onclick="abrirModal(this)">
-    </div>
-<div class="foto simples">
-      <img src="./ELT/art_ingame.webp" alt="DX LOGIN" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./ELT/banner_fb.jpg" alt="BANNER FACEBOOK" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./ELT/camp_elite.webp" alt="DX CAMP" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./ELT/DX.png" alt="DX DISCORD" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./ELT/fox_christmas.webp" alt="FOX" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./ELT/halloween_sorteio.webp" alt="HALLOWEEN" onclick="abrirModal(this)">
-    </div>
-    <div class="foto simples">
-      <img src="./ELT/newyear_2021.jpg" alt="NEW YEAR 2021" onclick="abrirModal(this)">
-    </div>
-
-    <!-- OTHERS -->
-     <div class="foto simples">
-      <img src="./ETC/banner_slower.webp" alt="SLOWER SERVER MINECRAFT" onclick="abrirModal(this)">
-    </div>
-         <div class="foto simples">
-      <img src="./ETC/crossfire_fenix.png" alt="CROSSFIRE FENIX CHAR BG" onclick="abrirModal(this)">
-    </div>
-         <div class="foto simples">
-      <img src="./ETC/crossfire_fenix_nobg.png" alt="CROSSFIRE FENIX NO BG" onclick="abrirModal(this)">
-    </div>
-         <div class="foto simples">
-      <img src="./ETC/flyer.png" alt="LIGA LEGENDS" onclick="abrirModal(this)">
-    </div>
-         <div class="foto simples">
-      <img src="./ETC/maintenance_done.png" alt="MAINTENANCE DONE" onclick="abrirModal(this)">
-    </div>
-         <div class="foto simples">
-      <img src="./ETC/ngthmare_logo.png" alt="NGTHMARE LOGO" onclick="abrirModal(this)">
-    </div>
-         <div class="foto simples">
-      <img src="./ETC/poseidon_sports.png" alt="POSEIDON ICON" onclick="abrirModal(this)">
-    </div>
-         <div class="foto simples">
-      <img src="./ETC/primed_bot.jpg" alt="PRIMED BOT DISCORD" onclick="abrirModal(this)">
-    </div>
-     <div class="foto manipulação">
-      <img src="./ETC/legacy_banner_discord.jpg" alt="LEGACY DISCORD" onclick="abrirModal(this)">
-    </div>
-
-    <!-- GENESIS -->
-          <div class="foto simples">
-      <img src="./GNS/banner_discord_genesis.webp" alt="GENESIS BANNER DISCORD" onclick="abrirModal(this)">
-    </div>
-              <div class="foto simples">
-      <img src="./GNS/banner_team.png" alt="BANNER TEAM" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto simples">
-      <img src="./GNS/bot_banner.png" alt="BOT VENDAS" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto simples">
-      <img src="./GNS/c1s.webp" alt="C1S" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto simples">
-      <img src="./GNS/carnaval_genesis.webp" alt="CARNAVAL V.02" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto simples">
-      <img src="./GNS/coming_soon_eu.webp" alt="COMING SOON" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto simples">
-      <img src="./GNS/daily_code_banner.png" alt="DAILY CODE" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto simples">
-      <img src="./GNS/discord_laucher_image.png" alt="LAUCHER DISCORD" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto simples">
-      <img src="./GNS/event_caça_aos_staff.webp" alt="EVENT STAFF" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto simples">
-      <img src="./GNS/event_christmas.webp" alt="CHRISTMAS" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto simples">
-      <img src="./GNS/event_magnata.webp" alt="MAGNATA" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto simples">
-      <img src="./GNS/event_procurar_e_destruir.webp" alt="P&D" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto manipulação">
-      <img src="./GNS/feliz_ano_novo_2024.webp" alt="HAPPY NEW YEAR 2024" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto simples">
-      <img src="./GNS/fim_de_ano_genesis.webp" alt="GENESIS YEAR" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto simples">
-      <img src="./GNS/genesis_cup_base.webp" alt="CUP BASE" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto simples">
-      <img src="./GNS/genesis_cup_xis_um.webp" alt="CUP XIS" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto simples">
-      <img src="./GNS/genesis_discord.webp" alt="GENESIS DISCORD EXAMPLE" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto simples">
-      <img src="./GNS/genesis_folia.webp" alt="GENESIS FOLIA" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto simples">
-      <img src="./GNS/genesis_online.webp" alt="ONLINE" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto manipulação">
-      <img src="./GNS/manipulation_banner.webp" alt="MANIPULATION BANNER" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto simples">
-      <img src="./GNS/mix.webp" alt="MIX" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto simples">
-      <img src="./GNS/nikita_banner_game.png" alt="NIKITA BANNER INGAME" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto simples">
-      <img src="./GNS/operação_genesis.webp" alt="OPERATION GENESIS" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto manipulação">
-      <img src="./GNS/pré_venda_valor_beast.webp" alt="PRÉ-SALE" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto simples">
-      <img src="./GNS/rank_mix.webp" alt="RANK" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto simples">
-      <img src="./GNS/register_laucher_banner.webp" alt="RG LAUCHER" onclick="abrirModal(this)">
-    </div>
-                  <div class="foto simples">
-      <img src="./GNS/soldier_beta.webp" alt="BETA SOLIDER" onclick="abrirModal(this)">
-    </div>
-
-  <!-- LENDA MIX -->
-                 <div class="foto simples">
-      <img src="./LDM/lenda_mix_banner_horarios.png" alt="HOURS LENDA MIX" onclick="abrirModal(this)">
-    </div>
-                     <div class="foto simples">
-      <img src="./LDM/lenda_mix_banner.png" alt="5S3 BANNER" onclick="abrirModal(this)">
-    </div>
-                     <div class="foto simples">
-      <img src="./LDM/lenda_mix_camp.jpg" alt="CAMP LENDAMIX BANNER" onclick="abrirModal(this)">
-    </div>
-                     <div class="foto simples">
-      <img src="./LDM/lenda_mix_logo.png" alt="CAMP LENDAMIX LOGO" onclick="abrirModal(this)">
-    </div>
-  <!-- Modal -->
-  <div id="modal" class="modal">
-    <span class="fechar" onclick="fecharModal()">&times;</span>
-    <img id="imgModal">
-  </div>
-      </div>
+    <section class="intro" id="home">
+        <div class="intro-text">
+            <p>Hello, I’m Shadow,</p>
+            <h1>Freelance</h1>
+            <h2>Grapich Designer</h2>
+            <a href="https://discord.gg/jZ6b3wAVrj">Contact Me</a>
+        </div>
+        <img src="./discord_image.png" alt="Foto perfil" class="intro-img"> 
     </section>
-  </div> 
-<script src="script.js"></script>
-</body>
-<div id="bloqueio-mensagem" style="display: none;">
-  ⚠️ Ação não permitida.
-</div>
 
+    <section class="about" id="about">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-text-container">
+            <p>I am a dedicated junior artist who believes that true value lies in effort and commitment. While my portfolio is still growing, each piece represents my unwavering focus on excellence. I approach every project as an opportunity for growth and a chance to apply my current knowledge to its fullest potential, ensuring a final product that not only meets expectations but exceeds them.</p>
+        </div>
+    </section>
+
+    <div class="styled-divider"></div>
+
+    <section id="works">
+        <h2 class="section-title">Works</h2>
+        <div class="works-grid">
+            <div class="work-card">
+                <img src="./ETC/legacy_banner_discord.jpg" alt="Projeto 1">
+                <div class="overlay">
+                    <h3>Artework Legacy/BS</h3>
+                    <span>Jan 2025</span>
+                </div>
+            </div>
+            <div class="work-card">
+                <img src="./AG/la_swat_edit.png" alt="Projeto 2">
+                <div class="overlay">
+                    <h3>Artework Alpha Gaming</h3>
+                    <span>Dez 2024</span>
+                </div>
+            </div>
+            <div class="work-card">
+                <img src="./CPX/banner_manipulation.png" alt="Projeto 3">
+                <div class="overlay">
+                    <h3>Banner Team Complexo</h3>
+                    <span>Out 2024</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="works-button">
+            <a href="works.html">See more</a>
+        </div>
+    </section>
+    <footer>
+        © 2025 Shadow | Todos os direitos reservados.
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <script>
+        // JS Navbar (seu código original)
+        const navbar = document.getElementById("navbar");
+        const links = document.querySelectorAll("nav ul li a");
+        const sections = document.querySelectorAll("section");
+
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add("scrolled");
+            } else {
+                navbar.classList.remove("scrolled");
+            }
+
+            let current = "";
+            sections.forEach(sec => {
+                const top = window.scrollY;
+                const offset = sec.offsetTop - 150;
+                const height = sec.offsetHeight;
+                if (top >= offset && top < offset + height) {
+                    current = sec.getAttribute("id");
+                }
+            });
+
+            links.forEach(link => {
+                link.classList.remove("active");
+                if (link.getAttribute("href").includes(current)) {
+                    link.classList.add("active");
+                }
+            });
+        });
+
+        // Efeitos de "Revelação de Camadas" com GSAP
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Animação de entrada do texto da home
+        const introTimeline = gsap.timeline({ delay: 0.5 });
+        introTimeline.to(".intro-text p", { duration: 0.8, opacity: 1, y: 0, ease: "power2.out" })
+            .to(".intro-text h1", { duration: 0.8, opacity: 1, y: 0, ease: "power2.out" }, "-=0.2")
+            .to(".intro-text h2", { duration: 0.8, opacity: 1, y: 0, ease: "power2.out" }, "-=0.2")
+            .to(".intro-text a", { duration: 0.8, opacity: 1, y: 0, ease: "power2.out" }, "-=0.2")
+            .to(".intro-img", { duration: 1.5, filter: "saturate(100%) brightness(1)", scale: 1 }, "-=0.5");
+
+
+        // Animação de revelação do texto na seção About
+        gsap.to(".about-text-container", {
+            opacity: 1,
+            y: 0,
+            duration: 1.5,
+            scrollTrigger: {
+                trigger: "#about",
+                start: "top 70%",
+                end: "top 30%",
+                scrub: true,
+            }
+        });
+        
+        // Animação de "renderização" nas cartas de trabalhos
+        gsap.to(".work-card", {
+            filter: "saturate(100%) brightness(1)",
+            scale: 1,
+            stagger: 0.2,
+            duration: 1,
+            scrollTrigger: {
+                trigger: "#works",
+                start: "top 70%",
+                toggleActions: "play none none none"
+            }
+        });
+
+        // Animação do botão "Ver mais"
+        gsap.to(".works-button", {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            scrollTrigger: {
+                trigger: ".works-button",
+                start: "top 90%",
+                toggleActions: "play none none none"
+            }
+        });
+
+        // Animação de "revelação" das logos dos projetos
+        gsap.to(".project-logo", {
+            filter: "saturate(100%) brightness(1)",
+            scale: 1,
+            opacity: 1,
+            stagger: 0.2,
+            duration: 1,
+            scrollTrigger: {
+                trigger: "#projects",
+                start: "top 70%",
+                toggleActions: "play none none none"
+            }
+        });
+
+    </script>
+</body>
 </html>
