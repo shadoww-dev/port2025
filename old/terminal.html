@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="tabTitle"></title>
+    <link rel="icon" type="image/x-icon" href="./discord_image.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #111417;
+            font-family: "Ubuntu Mono", "Courier New", Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            transition: background-color 0.3s;
+        }
+        body.fullscreen-bg {
+            padding: 0;
+            background-color: #1a2229;
+        }
+        .terminal-window {
+            width: 100%;
+            max-width: 900px;
+            height: 80vh;
+            background-color: #1a2229; 
+            border-radius: 6px 6px 0 0;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #28343f;
+            transition: all 0.3s ease;
+        }
+        .terminal-window.maximized {
+            max-width: 100% !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            border-radius: 0 !important;
+            border: none !important;
+        }
+        .terminal-window.minimized {
+            height: 38px !important;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .terminal-header {
+            background: linear-gradient(to bottom, #222b34, #1a2229);
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            position: relative;
+            user-select: none;
+            border-bottom: 1px solid #111417;
+        }
+        .terminal-title {
+            color: #dae4ed;
+            font-size: 0.9rem;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: bold;
+        }
+        .terminal-buttons {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+        }
+        .btn {
+            width: 14px;
+            height: 14px;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: bold;
+            user-select: none;
+            transition: filter 0.2s;
+            color: #dae4ed;
+            background-color: transparent;
+        }
+        .btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .btn-minimize::before { content: "–"; }
+        .btn-maximize::before { content: "❑"; font-size: 8px; }
+        .btn-close:hover {
+            background-color: #e81123;
+            color: white;
+        }
+        .btn-close::before { content: "×"; font-size: 13px; }
+        
+        .terminal-menu-bar {
+            background-color: #222b34;
+            padding: 4px 14px;
+            display: flex;
+            gap: 18px;
+            border-bottom: 1px solid #151b21;
+            user-select: none;
+        }
+        .menu-item {
+            color: #dae4ed;
+            font-size: 0.85rem;
+            cursor: pointer;
+            position: relative;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        .menu-item:hover {
+            background-color: #2c3845;
+            color: #ffffff;
+        }
+        .menu-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #222b34;
+            border: 1px solid #151b21;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            z-index: 100;
+            min-width: 160px;
+            border-radius: 0 0 4px 4px;
+        }
+        .menu-item:hover .menu-dropdown {
+            display: block;
+        }
+        .dropdown-option {
+            padding: 8px 12px;
+            color: #dae4ed;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            text-align: left;
+        }
+        .dropdown-option:hover {
+            background-color: #2c3845;
+            color: white;
+        }
+        .terminal-body {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            color: #ffffff;
+            font-size: 1rem;
+            line-height: 1.4;
+            background-color: #1a2229;
+        }
+        
+        .prompt-user {
+            color: #ff5555; 
+            font-weight: bold;
+        }
+        .prompt-dir {
+            color: #5555ff; 
+            font-weight: bold;
+        }
+        .prompt-sign {
+            color: #ffffff;
+        }
+        
+        .output-ls-dir {
+            color: #5555ff;
+            font-weight: bold;
+        }
+
+        .output-line {
+            margin-bottom: 8px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .screenfetch-container {
+            display: flex;
+            gap: 30px;
+            font-family: "Ubuntu Mono", monospace;
+            line-height: 1.2;
+            margin: 12px 0;
+        }
+        .screenfetch-ascii {
+            color: #55ffff; 
+            white-space: pre;
+            font-weight: bold;
+        }
+        .screenfetch-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .screenfetch-title {
+            color: #ff5555;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .info-label {
+            color: #5555ff;
+            font-weight: bold;
+        }
+
+        .terminal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin: 10px 0;
+        }
+
+        .terminal-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #28343f;
+            border-radius: 4px;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            height: auto; 
+            overflow: visible;
+        }
+
+        .terminal-card img {
+            width: 100%;
+            height: 130px;
+            object-fit: cover;
+            border-radius: 2px;
+            display: block;
+            margin-bottom: 8px;
+            filter: none;
+            opacity: 1;
+            cursor: pointer; 
+            transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease; 
+        }
+
+        .terminal-card img:hover {
+            transform: scale(1.04); 
+            filter: brightness(1.15); 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); 
+        }
+
+        .terminal-card-title {
+            color: #fce94f;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .terminal-card-meta {
+            color: #babdb6;
+            font-size: 0.8rem;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .input-line {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+        .cmd-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 1rem;
+            padding-left: 8px;
+        }
+        .autocomplete-hint {
+            color: #888a85;
+            margin-left: 10px;
+            font-size: 0.85rem;
+            font-style: italic;
+            margin-top: 2px;
+        }
+        .terminal-closed-screen {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            color: #ff5555;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-align: center;
+            background-color: #111417;
+            padding: 4px;
+            flex: 1;
+        }
+        .btn-restart {
+            margin-top: 15px;
+            padding: 8px 16px;
+            background-color: #2c3845;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+        .btn-restart:hover { background-color: #3e4f61; }
+        .terminal-body::-webkit-scrollbar { width: 8px; }
+        .terminal-body::-webkit-scrollbar-thumb { background-color: #2c3845; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <div class="terminal-window" id="terminalWindow">
+        <div class="terminal-header">
+            <div class="terminal-title" id="terminalHeaderTitle"></div>
+            <div class="terminal-buttons">
+                <div class="btn btn-minimize" title="Minimizar" onclick="minimizeTerminal(event)"></div>
+                <div class="btn btn-maximize" title="Maximizar" onclick="maximizeTerminal(event)"></div>
+                <div class="btn btn-close" title="Fechar" onclick="closeTerminal(event)"></div>
+            </div>
+        </div>
+
+        <div class="terminal-menu-bar" id="terminalMenuBar">
+            <div class="menu-item">
+                Arquivo
+                <div class="menu-dropdown">
+                    <div class="dropdown-option" onclick="closeTerminal(event)">Sair</div>
+                </div>
+            </div>
+            <div class="menu-item">
+                Editar
+                <div class="menu-dropdown">
+                    <div class="dropdown-option" onclick="pasteSimulation()">Colar Comando</div>
+                </div>
+            </div>
+            <div class="menu-item">
+                Ver
+                <div class="menu-dropdown">
+                    <div class="dropdown-option" onclick="maximizeTerminal(event)">Alternar Tela Cheia</div>
+                </div>
+            </div>
+            <div class="menu-item">
+                Terminal
+                <div class="menu-dropdown">
+                    <div class="dropdown-option" onclick="executeLinuxCommand('clear')">Limpar Tela</div>
+                </div>
+            </div>
+            <div class="menu-item">
+                Ajuda
+                <div class="menu-dropdown">
+                    <div class="dropdown-option" onclick="executeLinuxCommand('help')">Ver Lista de Comandos</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="terminal-body" id="terminalBody" onclick="focusInput()">
+            <div id="terminalHistory">
+                <div class="output-line">Welcome to Kali GNU/Linux (Fsociety Framework v1.0.4)</div>
+                <div class="output-line"></div>
+            </div>
+
+            <div class="input-line" id="inputLine">
+                <span class="prompt-user" id="mainPrompt"></span><span class="prompt-sign">:</span><span class="prompt-dir">~</span><span class="prompt-sign">$</span>
+                <input type="text" id="cmdInput" class="cmd-input" autofocus autocomplete="off" spellcheck="false">
+            </div>
+            <div id="hintBox" class="autocomplete-hint"></div>
+        </div>
+
+        <div class="terminal-closed-screen" id="closedScreen">
+            <div>[SESSÃO FINALIZADA]</div>
+            <div style="color: #babdb6; font-size: 0.85rem; margin-top: 6px; font-weight: normal;">O processo bash foi encerrado voluntariamente.</div>
+            <button class="btn-restart" onclick="restartTerminal()">Reiniciar Terminal</button>
+        </div>
+    </div>
+
+    <script>
+        const TERMINAL_USER = "kali";
+
+        document.getElementById("tabTitle").innerText = `${TERMINAL_USER}@kali: ~`;
+        document.getElementById("terminalHeaderTitle").innerText = `${TERMINAL_USER}@kali: ~`;
+        document.getElementById("mainPrompt").innerText = `${TERMINAL_USER}@kali`;
+
+        const pastaImagens = {
+            "etc": [
+                { path: "./ETC/legacy_banner_discord.jpg", title: "Artework Legacy/BS", date: "Jan 2025" }
+            ],
+            "ag": [
+                { path: "./AG/la_swat_edit.png", title: "Artework Alpha Gaming", date: "Dez 2024" }
+            ],
+            "cpx": [
+                { path: "./CPX/banner_manipulation.png", title: "Banner Team Complexo", date: "Out 2024" }
+            ],
+            "raiz": [
+                { path: "./discord_image.png", title: "Foto perfil (Shadow)", date: "Atual" }
+            ]
+        };
+
+        const terminalWindow = document.getElementById("terminalWindow");
+        const cmdInput = document.getElementById("cmdInput");
+        const terminalHistory = document.getElementById("terminalHistory");
+        const terminalBody = document.getElementById("terminalBody");
+        const hintBox = document.getElementById("hintBox");
+        const closedScreen = document.getElementById("closedScreen");
+        const terminalMenuBar = document.getElementById("terminalMenuBar");
+
+        function focusInput() {
+            if (!terminalWindow.classList.contains("minimized") && terminalBody.style.display !== "none") {
+                cmdInput.focus();
+            }
+        }
+
+        function minimizeTerminal(e) {
+            e.stopPropagation();
+            terminalWindow.classList.toggle("minimized");
+        }
+
+        function maximizeTerminal(e) {
+            if (e) e.stopPropagation();
+            terminalWindow.classList.remove("minimized");
+            terminalWindow.classList.toggle("maximized");
+            document.body.classList.toggle("fullscreen-bg");
+        }
+
+        function closeTerminal(e) {
+            if (e) e.stopPropagation();
+            terminalBody.style.display = "none";
+            terminalMenuBar.style.display = "none";
+            closedScreen.style.display = "flex";
+        }
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Tab") {
+                e.preventDefault();
+                if (hintBox.innerText.includes(": ")) {
+                    const matchPath = hintBox.innerText.split(": ").pop();
+                    const words = cmdInput.value.split(" ");
+                    words[words.length - 1] = matchPath;
+                    cmdInput.value = words.join(" ");
+                    hintBox.innerText = "";
+                }
+            }
+        });
+
+        function restartTerminal() {
+            closedScreen.style.display = "none";
+            terminalBody.style.display = "block";
+            terminalMenuBar.style.display = "flex";
+            terminalHistory.innerHTML = '<div class="output-line">Sessão restaurada com sucesso. Pronto para novos comandos.</div>';
+            localStorage.setItem("terminal_history", terminalHistory.innerHTML);
+            focusInput();
+        }
+
+        function pasteSimulation() {
+            cmdInput.value = "locate -i ag";
+            focusInput();
+        }
+
+        cmdInput.addEventListener("input", () => {
+            const val = cmdInput.value.trim().toLowerCase();
+            if (!val) {
+                hintBox.innerText = "";
+                return;
+            }
+            if (val.startsWith("locate")) {
+                const searchPart = val.split(" ").pop();
+                if (searchPart.length > 1) {
+                    const match = Object.keys(pastaImagens).find(k => k.includes(searchPart));
+                    if (match) {
+                        hintBox.innerText = `Pressione Tab para autocompletar pasta: ${match}`;
+                        return;
+                    }
+                }
+            }
+            hintBox.innerText = "";
+        });
+
+        cmdInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                const fullCommand = cmdInput.value;
+                const trimmedCommand = fullCommand.trim();
+                if (trimmedCommand) {
+                    executeLinuxCommand(trimmedCommand);
+                }
+                cmdInput.value = "";
+                hintBox.innerText = "";
+            }
+        });
+
+        function executeLinuxCommand(command) {
+            const commandLine = document.createElement("div");
+            commandLine.className = "output-line";
+            commandLine.innerHTML = `<span class="prompt-user">${TERMINAL_USER}@kali</span><span class="prompt-sign">:</span><span class="prompt-dir">~</span><span class="prompt-sign">$</span> ${command}`;
+            terminalHistory.appendChild(commandLine);
+
+            const lowerCmd = command.toLowerCase();
+
+            if (lowerCmd === "clear") {
+                terminalHistory.innerHTML = "";
+            } 
+            else if (lowerCmd === "ls") {
+                const outputLine = document.createElement("div");
+                outputLine.className = "output-line";
+                outputLine.innerHTML = "Pastas de Portfólio disponíveis: <span class=\"output-ls-dir\">AG/</span>  <span class=\"output-ls-dir\">CPX/</span>  <span class=\"output-ls-dir\">ETC/</span>  <span class=\"output-ls-dir\">RAIZ/</span>";
+                terminalHistory.appendChild(outputLine);
+            } 
+            else if (lowerCmd === "help") {
+                printOutput("Comandos oficiais do sistema:\n  ls                - Listar pastas do portfólio.\n  screenfetch       - Exibir arte ASCII do perfil.\n  locate [pasta]    - Abrir pasta e renderizar todas as imagens dela de uma vez.\n  clear             - Limpar a tela do terminal.\n  exit              - Fechar terminal.");
+            }
+            else if (lowerCmd === "screenfetch") {
+                renderScreenfetch();
+            }
+            else if (lowerCmd.startsWith("locate ")) {
+                const pastaAlvo = lowerCmd.replace("locate -i ", "").replace("locate ", "").replace("/", "").trim();
+                const imagensDaPasta = pastaImagens[pastaAlvo];
+                
+                if (imagensDaPasta) {
+                    printOutput(`[Exibindo conteúdo do diretório: ${pastaAlvo.toUpperCase()}]`);
+                    renderImageGrid(imagensDaPasta);
+                } else {
+                    printOutput(`Diretório '${pastaAlvo}' não encontrado. Use 'ls' para ver as pastas disponíveis.`);
+                }
+            } 
+            else if (lowerCmd === "dir") {
+                printOutput("Ei! Aqui rodamos Kali Linux. Use 'ls'!");
+            }
+            else if (lowerCmd === "cls") {
+                printOutput("Comando não encontrado. Use 'clear'.");
+            }
+            else if (lowerCmd === "whoami") {
+                printOutput(`Você é ${TERMINAL_USER}@kali, explorando o ecossistema do Shadow.`);
+            }
+            else if (lowerCmd === "exit") {
+                closeTerminal();
+            }
+            else {
+                printOutput(`${command}: comando não encontrado. Digite 'help'.`);
+            }
+
+            localStorage.setItem("terminal_history", terminalHistory.innerHTML);
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+        }
+
+        function printOutput(text) {
+            const outputLine = document.createElement("div");
+            outputLine.className = "output-line";
+            outputLine.innerText = text;
+            terminalHistory.appendChild(outputLine);
+        }
+
+        function renderImageGrid(itens) {
+            const gridContainer = document.createElement("div");
+            gridContainer.className = "terminal-grid";
+            
+            let htmlContent = "";
+            itens.forEach(item => {
+                htmlContent += `
+                    <div class="terminal-card">
+                        <img src="${item.path}" alt="${item.title}" onclick="window.open('${item.path}', '_blank')">
+                        <div class="terminal-card-title">${item.title}</div>
+                        <div class="terminal-card-meta">Data: ${item.date}</div>
+                    </div>
+                `;
+            });
+            
+            gridContainer.innerHTML = htmlContent;
+            terminalHistory.appendChild(gridContainer);
+        }
+
+        function renderScreenfetch() {
+            const container = document.createElement("div");
+            container.className = "screenfetch-container";
+            
+            const asciiLogo = 
+`........................................
+.....................  .. # ............
+.................  .... ## .............
+...............  ..... ### .............
+.............  ...... #### .............
+............  ...... ##### .............
+...........  ...... ###### .............
+..........  ...... ####### .............
+....      ....... ######## .............
+.. ##############  ####### .............
+....       ...... ######## .............
+...........  ...... ###### .............
+............  ...... ##### .............
+.............  ...... #### .............
+...............  ..... ### .............
+.................  .... ## .............
+.....................  .. # ............
+........................................`;
+
+            container.innerHTML = `
+                <div class="screenfetch-ascii">${asciiLogo}</div>
+                <div class="screenfetch-info">
+                    <div class="screenfetch-title">${TERMINAL_USER}@kali</div>
+                    <div>-------------------------</div>
+                    <div><span class="info-label">OS:</span> Kali GNU/Linux Rolling x86_64</div>
+                    <div><span class="info-label">Kernel:</span> Linux 6.6.9-amd64</div>
+                    <div><span class="info-label">Uptime:</span> 1h 23m</div>
+                    <div><span class="info-label">Packages:</span> 2450 (dpkg)</div>
+                    <div><span class="info-label">Shell:</span> bash 5.2.21</div>
+                    <div><span class="info-label">Resolution:</span> 1920x1080</div>
+                    <div><span class="info-label">DE:</span> Xfce 4.18</div>
+                    <div><span class="info-label">WM:</span> Xfwm4</div>
+                    <div><span class="info-label">WM Theme:</span> Kali-Dark</div>
+                    <div><span class="info-label">CPU:</span> Intel i7-12700H (20) @ 4.70GHz</div>
+                    <div><span class="info-label">GPU:</span> NVIDIA GeForce RTX 3060 Mobile</div>
+                    <div><span class="info-label">RAM:</span> 4120MiB / 15788MiB</div>
+                </div>
+            `;
+            terminalHistory.appendChild(container);
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            const savedHistory = localStorage.getItem("terminal_history");
+            if (savedHistory) {
+                terminalHistory.innerHTML = savedHistory;
+                terminalBody.scrollTop = terminalBody.scrollHeight;
+            }
+        });
+    </script>
+</body>
+</html>

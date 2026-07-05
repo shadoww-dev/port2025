@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadow :: Portfolio</title>
+    <link rel="icon" type="image/x-icon" href="./discord_image.png">
+    <meta name="description" content="Hello, I’m Shadow, a passionate and creative Junior Graphic Designer. My portfolio is a showcase of my journey in transforming ideas into compelling visuals. I specialize in brand identity, typography, and digital illustration, with a keen eye for detail and a fresh perspective. I thrive on problem-solving and am always eager to learn and grow. Let’s collaborate and create something unforgettable.">
+
+    <style>
+        /* ===== RESET ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #0d1117;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== NAVBAR ===== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: background .6s ease, box-shadow .6s ease;
+        }
+
+        header.scrolled {
+            background: rgba(13,17,23,0.95);
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.6);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 40px;
+        }
+
+        nav ul li a {
+            position: relative;
+            text-decoration: none;
+            color: #ddd;
+            font-size: 1rem;
+            transition: color .3s;
+            padding-bottom: 5px;
+        }
+
+        nav ul li a:hover {
+            color: #31a8ff;
+        }
+
+        nav ul li a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background: #31a8ff;
+            transition: width .3s ease;
+        }
+
+        nav ul li a:hover::after,
+        nav ul li a.active::after {
+            width: 100%;
+        }
+
+        nav ul li a.active {
+            color: #31a8ff;
+            text-shadow: 0 0 5px rgba(49, 168, 255, 0.8);
+        }
+
+        /* ===== SECTIONS ===== */
+        section {
+            padding: 100px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        h2.section-title {
+            font-size: 2.2rem;
+            color: #31a8ff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        p.section-subtitle {
+            text-align: center;
+            color: #ccc;
+            margin-bottom: 50px;
+        }
+
+        /* ===== HERO - Estilos para animação ===== */
+        .intro {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 50px;
+            text-align: left;
+            min-height: 100vh;
+        }
+        
+        .intro-text {
+            max-width: 450px;
+        }
+
+        .intro-text p, .intro-text h1, .intro-text h2 {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .intro-text h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .intro-text h2 {
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .intro-text a {
+            opacity: 0;
+            color: #31a8ff;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+
+        .intro-text a:hover {
+            text-decoration: underline;
+        }
+
+        .intro-img {
+            width: 300px;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0px 8px 25px rgba(0,0,0,0.6);
+            filter: saturate(0%) brightness(0.5);
+            transform: scale(0.9);
+        }
+
+        /* ===== ABOUT - Estilos para animação ===== */
+        .about-text-container {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        /* ===== LINHA DIVISÓRIA ESTILIZADA (usando div) ===== */
+        .styled-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #31a8ff, transparent);
+            width: 70%;
+            max-width: 500px;
+            margin: 50px auto;
+            opacity: 0.5;
+        }
+
+        /* ===== WORKS - Estilos para animação ===== */
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .work-card {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0px 6px 15px rgba(0,0,0,0.5);
+            transition: transform .3s;
+            filter: saturate(0%) brightness(0.5);
+            transform: scale(0.9);
+        }
+
+        .work-card:hover {
+            transform: scale(1.05);
+        }
+
+        .work-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        /* Overlay transparente */
+        .work-card .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(13, 17, 23, 0.8);
+            color: #fff;
+            padding: 15px;
+            opacity: 0;
+            transition: opacity .3s ease;
+            font-size: 0.9rem;
+        }
+
+        .work-card .overlay h3 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            color: #31a8ff;
+        }
+
+        .work-card .overlay span {
+            display: block;
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-bottom: 8px;
+        }
+
+        .work-card .overlay p {
+            font-size: 0.85rem;
+            color: #ddd;
+            line-height: 1.4;
+        }
+
+        .work-card:hover .overlay {
+            opacity: 1;
+        }
+
+        /* Botão "Ver mais" */
+        .works-button {
+            text-align: center;
+            margin-top: 40px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .works-button a {
+            display: inline-block;
+            padding: 12px 25px;
+            color: #31a8ff;
+            border: 2px solid #31a8ff;
+            background: transparent;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background .4s, color .4s, box-shadow .4s, transform .2s ease-in-out;
+        }
+
+        .works-button a:hover {
+            background: #31a8ff;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(49, 168, 255, 0.6);
+        }
+
+        .works-button a:active {
+            transform: scale(0.95);
+        }
+
+        /* ===== PROJETOS (LOGOS) ===== */
+        #projects {
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .logos-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .project-logo {
+            max-width: 150px;
+            height: auto;
+            filter: saturate(0%) brightness(0.5);
+            opacity: 0.8;
+            transition: filter 0.5s ease-in-out, transform 0.3s ease-in-out, opacity 0.5s;
+            cursor: pointer;
+        }
+
+        /* Efeito de revelação ao passar o mouse */
+        .project-logo:hover {
+            filter: saturate(100%) brightness(1);
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #aaa;
+            font-size: 0.9rem;
+            border-top: 1px solid #222;
+        }
+
+        /* ===== ESTILOS DA SCROLLBAR PARA BROWSERS WEBKIT (CHROME, SAFARI, EDGE) ===== */
+
+        ::-webkit-scrollbar {
+            width: 3px;
+            height: 3px;
+            background-color: transparent;
+        }
+
+        ::-webkit-scrollbar-button {
+            display: none;
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #555866;
+            border-radius: 2px;
+        }
+
+        ::-webkit-scrollbar-track:hover {
+            background-color: #1e1e2d;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #7a7e8f;
+        }
+
+        /* ===== ESTILOS PARA FIREFOX ===== */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #555866 transparent;
+        }
+    </style>
+</head>
+<body>
+    <header id="navbar">
+        <nav>
+            <ul>
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#works">Works</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="intro" id="home">
+        <div class="intro-text">
+            <p>Hello, I’m Shadow,</p>
+            <h1>Freelance</h1>
+            <h2>Grapich Designer</h2>
+            <a href="https://discord.gg/jZ6b3wAVrj">Contact Me</a>
+        </div>
+        <img src="./discord_image.png" alt="Foto perfil" class="intro-img"> 
+    </section>
+
+    <section class="about" id="about">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-text-container">
+            <p>I am a dedicated junior artist who believes that true value lies in effort and commitment. While my portfolio is still growing, each piece represents my unwavering focus on excellence. I approach every project as an opportunity for growth and a chance to apply my current knowledge to its fullest potential, ensuring a final product that not only meets expectations but exceeds them.</p>
+        </div>
+    </section>
+
+    <div class="styled-divider"></div>
+
+    <section id="works">
+        <h2 class="section-title">Works</h2>
+        <div class="works-grid">
+            <div class="work-card">
+                <img src="./ETC/legacy_banner_discord.jpg" alt="Projeto 1">
+                <div class="overlay">
+                    <h3>Artework Legacy/BS</h3>
+                    <span>Jan 2025</span>
+                </div>
+            </div>
+            <div class="work-card">
+                <img src="./AG/la_swat_edit.png" alt="Projeto 2">
+                <div class="overlay">
+                    <h3>Artework Alpha Gaming</h3>
+                    <span>Dez 2024</span>
+                </div>
+            </div>
+            <div class="work-card">
+                <img src="./CPX/banner_manipulation.png" alt="Projeto 3">
+                <div class="overlay">
+                    <h3>Banner Team Complexo</h3>
+                    <span>Out 2024</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="works-button">
+            <a href="works.html">See more</a>
+        </div>
+    </section>
+    <footer>
+        © 2025 Shadow | Todos os direitos reservados.
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <script>
+        // JS Navbar (seu código original)
+        const navbar = document.getElementById("navbar");
+        const links = document.querySelectorAll("nav ul li a");
+        const sections = document.querySelectorAll("section");
+
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add("scrolled");
+            } else {
+                navbar.classList.remove("scrolled");
+            }
+
+            let current = "";
+            sections.forEach(sec => {
+                const top = window.scrollY;
+                const offset = sec.offsetTop - 150;
+                const height = sec.offsetHeight;
+                if (top >= offset && top < offset + height) {
+                    current = sec.getAttribute("id");
+                }
+            });
+
+            links.forEach(link => {
+                link.classList.remove("active");
+                if (link.getAttribute("href").includes(current)) {
+                    link.classList.add("active");
+                }
+            });
+        });
+
+        // Efeitos de "Revelação de Camadas" com GSAP
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Animação de entrada do texto da home
+        const introTimeline = gsap.timeline({ delay: 0.5 });
+        introTimeline.to(".intro-text p", { duration: 0.8, opacity: 1, y: 0, ease: "power2.out" })
+            .to(".intro-text h1", { duration: 0.8, opacity: 1, y: 0, ease: "power2.out" }, "-=0.2")
+            .to(".intro-text h2", { duration: 0.8, opacity: 1, y: 0, ease: "power2.out" }, "-=0.2")
+            .to(".intro-text a", { duration: 0.8, opacity: 1, y: 0, ease: "power2.out" }, "-=0.2")
+            .to(".intro-img", { duration: 1.5, filter: "saturate(100%) brightness(1)", scale: 1 }, "-=0.5");
+
+
+        // Animação de revelação do texto na seção About
+        gsap.to(".about-text-container", {
+            opacity: 1,
+            y: 0,
+            duration: 1.5,
+            scrollTrigger: {
+                trigger: "#about",
+                start: "top 70%",
+                end: "top 30%",
+                scrub: true,
+            }
+        });
+        
+        // Animação de "renderização" nas cartas de trabalhos
+        gsap.to(".work-card", {
+            filter: "saturate(100%) brightness(1)",
+            scale: 1,
+            stagger: 0.2,
+            duration: 1,
+            scrollTrigger: {
+                trigger: "#works",
+                start: "top 70%",
+                toggleActions: "play none none none"
+            }
+        });
+
+        // Animação do botão "Ver mais"
+        gsap.to(".works-button", {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            scrollTrigger: {
+                trigger: ".works-button",
+                start: "top 90%",
+                toggleActions: "play none none none"
+            }
+        });
+
+        // Animação de "revelação" das logos dos projetos
+        gsap.to(".project-logo", {
+            filter: "saturate(100%) brightness(1)",
+            scale: 1,
+            opacity: 1,
+            stagger: 0.2,
+            duration: 1,
+            scrollTrigger: {
+                trigger: "#projects",
+                start: "top 70%",
+                toggleActions: "play none none none"
+            }
+        });
+
+    </script>
+</body>
+</html>
