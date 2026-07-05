@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfólio : Sh4dw</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="./discord.jpg">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <section id="secaoSobreMim" class="secao-sobre-mim">
+        <div class="marquee-container">
+            <div class="marquee-content">
+                <span class="marquee-palavra marquee-palavra-glitch">about me</span>
+                <span class="marquee-palavra marquee-palavra-glitch">about me</span>
+                <span class="marquee-palavra marquee-palavra-glitch">about me</span>
+                <span class="marquee-palavra marquee-palavra-glitch">about me</span>
+                <span class="marquee-palavra marquee-palavra-glitch">about me</span>
+                <span class="marquee-palavra marquee-palavra-glitch">about me</span>
+                <span class="marquee-palavra marquee-palavra-glitch">about me</span>
+                <span class="marquee-palavra marquee-palavra-glitch">about me</span>
+            </div>
+        </div>
+
+        <div class="sobre-conteudo-grid">
+            <div class="coluna-introducao">
+                <h3 class="sobre-saudacao">Hey!</h3>
+                <p class="sobre-texto-resumo">
+I am increasingly delving deeper into graphic design, and for that, time and practice are essential.</p>
+                <p class="sobre-texto-resumo">
+This is my official portfolio, and I will be posting my entire process here.</p>
+            </div>
+
+            <div class="coluna-experiencia">
+                <h4 class="experiencia-titulo-bloco">Experience</h4>
+                <div class="experiencia-container-lista">
+                    <div class="experiencia-item">
+                        <div class="experiencia-periodo">2026 — Present</div>
+                        <div>
+                            <div class="experiencia-cargo">Designer / Developer</div>
+                            <div class="experiencia-empresa">Freelancer / Independent Projects</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <nav id="menuFuturista" class="navbar-vidro fechado">
+        <div class="nav-conteudo">
+            <span class="logo-nome">Sh4dw</span>
+            <div class="menu-botoes">
+                <a href="#secaoSobreMim" class="btn-menu-item">About</a>
+                <a href="#secaoDestaques" class="btn-menu-item">Projects</a>
+                <a href="#nomeGiganteFooter" class="btn-menu-item">Contact</a>
+            </div>
+            <button id="btnControleMenu" class="btn-toggle-menu">&#8226;&#8226;&#8226;</button>
+        </div>
+    </nav>
+
+    <section id="secaoDestaques" class="secao-wrapper fade-section">
+        <div class="categoria-header">
+            <h2 class="categoria-titulo">Featured<br>Projects</h2>
+            <button id="btnVerTodos" class="btn-ver-todos">
+                View All Work <span class="icone-seta">&nearr;</span>
+            </button>
+        </div>
+        <div id="vitrineHome" class="vitrine-home grid-2x2"></div>
+    </section>
+
+    <section id="secaoTodosTrabalhos" class="secao-wrapper fade-section hidden">
+        <div class="categoria-header">
+            <h2 class="categoria-titulo">All Creations<br>& Archive</h2>
+            <button id="btnVoltarDestaques" class="btn-ver-todos">Back to Featured</button>
+        </div>
+        <p class="section-intro-text">
+            Below you can check the unified portfolio index containing all developed visual experiments.
+        </p>
+        <div id="vitrineTodos" class="vitrine-home grid-archive"></div>
+    </section>
+
+    <div id="visualizadorBehance" class="behance-overlay hidden">
+        <div class="behance-wrapper-1400">
+            <div class="behance-nav-integrada">
+                <div class="nav-left-group">
+                    <img id="navAvatar" class="avatar-autor" src="" alt="Avatar">
+                    <div class="nav-project-titles">
+                        <h3 id="navTitulo">Loading...</h3>
+                    </div>
+                    <div id="navTools" class="nav-tools-container"></div>
+                </div>
+                <button id="fecharProjeto" class="btn-close-integrado">&times;</button>
+            </div>
+
+            <div id="projetoConteudoBox" class="projeto-conteudo-box">
+                <div class="projeto-header">
+                    <div class="linhas-divisorias">----------------------------------------------------------------------------------------------------</div>
+                    <div id="textoIntroducao">Loading data...</div>
+                    <div class="linhas-divisorias">----------------------------------------------------------------------------------------------------</div>
+                </div>
+                <div id="galeriaImagens" class="grid-imagens-behance"></div>
+                <div class="projeto-footer-block">
+                    <h2 id="footerTitulo">Title</h2>
+                    <div id="txtDataPostagem" class="footer-info-data">Portfolio Updated</div>
+                </div>
+                <div class="sugestoes-autor-block">
+                    <div class="perfil-sugestao-row">
+                        <div class="perfil-sugestao-left">
+                            <img id="sugestaoAvatar" src="" alt="Autor">
+                            <div class="perfil-sugestao-info">
+                                <h4 id="sugestaoAutorNome">Author</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="containerSugestoes" class="grid-sugestoes-albuns"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="zoomLightbox" class="zoom-lightbox-layer hidden">
+        <button id="closeZoom" class="btn-close-zoom">&times;</button>
+        <button id="prevZoom" class="lightbox-nav-btn btn-left">&#10094;</button>
+        <div class="zoom-container-art">
+            <img id="zoomImagemAlvo" src="" alt="Zoom">
+        </div>
+        <button id="nextZoom" class="lightbox-nav-btn btn-right">&#10095;</button>
+        <div class="zoom-status-bar">
+            <img id="zoomBannerAlvo" class="zoom-mini-banner" src="" alt="Banner">
+            <div class="zoom-textos-group">
+                <div id="zoomStatusTitulo" class="status-titulo-projeto">Project Name</div>
+                <div id="zoomStatusMeta" class="status-subtext">Image 1 of 3</div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer-portfolio-exclusivo">
+        <div class="footer-conteudo-grid">
+            <div class="footer-dropup-container">
+                <button class="footer-titulo-botao" onclick="toggleDropup(this)">
+                    Quick Links
+                </button>
+                <div class="footer-dropup-menu">
+                    <ul class="footer-lista-links">
+                        <li class="footer-item-link"><a href="#secaoSobreMim" class="footer-link">About</a></li>
+                        <li class="footer-item-link"><a href="#secaoDestaques" class="footer-link">Projects</a></li>
+                        <li class="footer-item-link"><a href="#nomeGiganteFooter" class="footer-link">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-dropup-container">
+                <button class="footer-titulo-botao" onclick="toggleDropup(this)">
+                    Contact
+                </button>
+                <div class="footer-dropup-menu">
+                    <ul class="footer-lista-links">
+                        <li class="footer-item-link"><a href="https://discord.gg/pNBnzqGKDE" target="_blank" class="footer-link">Discord &rarr;</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="nomeGiganteFooter" class="footer-nome-gigante-fundo">Sh4dw</div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
