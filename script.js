@@ -22,7 +22,7 @@
                     "./AG/register.png",   // Outra menor (<1200) para testar o encaixe dinâmico
                     "./AG/alpha_lancamento.jpg",    // Par da de cima
                     "./AG/ag (30).webp",
-                    "./AG/ag (26).webp)",
+                    "./AG/ag (26).webp",
                     "./AG/ag (24).webp",
                     "./AG/ag (19).webp",
                     "./AG/ag (14).webp",
